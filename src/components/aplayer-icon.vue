@@ -2,7 +2,7 @@
   <svg xmlns:xlink="http://www.w3.org/1999/xlink" height="100%" version="1.1" :viewBox="svg.viewBox" width="100%"
        :style="style">
     <use xlink:href="#aplayer-${type}"></use>
-    <path class="aplayer-fill" :d="svg.d"></path>
+    <path class="aplayer-fill" :d="svg.d" :style="{fill: theme}"></path>
   </svg>
 </template>
 
@@ -20,7 +20,7 @@
   }, {})
 
   export default {
-    props: ['type'],
+    props: ['type', 'theme'],
     computed: {
       svg () {
         let icon = this.type

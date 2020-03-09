@@ -10,8 +10,10 @@
     />
     <div class="aplayer-time">
       <div class="aplayer-time-inner">
-        - <span class="aplayer-ptime">{{secondToTime(stat.playedTime)}}</span> / <span
-        class="aplayer-dtime">{{secondToTime(stat.duration)}}</span>
+        <span class="aplayer-ptime" :style="{color: theme}">
+          - {{secondToTime(stat.playedTime)}}
+          / {{secondToTime(stat.duration)}}
+        </span>
       </div>
       <volume
         v-if="!$parent.isMobile"
@@ -21,21 +23,30 @@
         @togglemute="$emit('togglemute')"
         @setvolume="v => $emit('setvolume', v)"
       />
-      <icon-button
+      <icon-button v-if="!chatMode"
         class="aplayer-icon-mode"
         icon="shuffle"
+        :theme="theme"
         :class="{ 'inactive': !shuffle }"
         @click.native="$emit('toggleshuffle')"
       />
-      <icon-button
+      <icon-button v-if="!chatMode"
         class="aplayer-icon-mode"
         :icon="repeat === 'repeat-one' ? 'repeat-one' : 'repeat-all'"
         :class="{ 'inactive': repeat === 'no-repeat'}"
+        :theme="theme"
         @click.native="$emit('nextmode')"
+      />
+      <icon-button v-if="chatMode"
+        class="aplayer-icon-mode"
+        icon="download"
+        :theme="theme"
+        @click.native="$emit('downloadaudio')"
       />
       <icon-button
         class="aplayer-icon-menu"
         icon="menu"
+        :theme="theme"
         :class="{ 'inactive': !$parent.showList }"
         @click.native="$emit('togglelist')"
       />
@@ -54,7 +65,7 @@
       VProgress,
       Volume,
     },
-    props: ['shuffle', 'repeat', 'stat', 'theme', 'volume', 'muted'],
+    props: ['shuffle', 'repeat', 'stat', 'theme', 'volume', 'muted', 'chatMode'],
     computed: {
       loadProgress () {
         if (this.stat.duration === 0) return 0
@@ -80,7 +91,7 @@
         const minAdjust = Math.trunc((second / 60) - (60 * Math.trunc((second / 60) / 60)))
         return second >= 3600 ? pad0(hours) + ':' + pad0(minAdjust) + ':' + pad0(sec) : pad0(min) + ':' + pad0(sec)
       },
-    },
+    }
   }
 </script>
 

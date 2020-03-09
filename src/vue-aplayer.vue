@@ -13,6 +13,7 @@
     <div class="aplayer-body">
       <thumbnail
         :pic="currentMusic.pic"
+        :chatMode="chatMode"
         :playing="isPlaying"
         :enable-drag="isFloatMode"
         :theme="currentTheme"
@@ -29,6 +30,7 @@
           <lyrics :current-music="currentMusic" :play-stat="playStat" v-if="showLrc" />
         </slot>
         <controls
+          :chatMode="chatMode"
           :shuffle="shouldShuffle"
           :repeat="repeatMode"
           :stat="playStat"
@@ -43,6 +45,7 @@
           @dragend="onProgressDragEnd"
           @dragging="onProgressDragging"
           @nextmode="setNextMode"
+          @downloadaudio="downloadAudio"
         />
       </div>
     </div>
@@ -115,6 +118,10 @@
         type: Boolean,
         default: false,
       },
+      chatMode: {
+        type: Boolean,
+        default: false,
+      },
       showLrc: {
         type: Boolean,
         default: false,
@@ -126,6 +133,10 @@
       theme: {
         type: String,
         default: '#41b883',
+      },
+      backgroundColor: {
+        type: String,
+        default: '#fff'
       },
 
       listMaxHeight: String,
@@ -315,6 +326,7 @@
         return {
           transform: `translate(${this.floatOffsetLeft}px, ${this.floatOffsetTop}px)`,
           webkitTransform: `translate(${this.floatOffsetLeft}px, ${this.floatOffsetTop}px)`,
+          backgroundColor: this.backgroundColor
         }
       },
       currentPicStyleObj () {
@@ -420,6 +432,9 @@
         } else {
           this.repeatMode = REPEAT.REPEAT_ALL
         }
+      },
+      downloadAudio () {
+        window.open(this.music.src, 'download')
       },
       thenPlay () {
         this.$nextTick(() => {

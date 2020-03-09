@@ -3,7 +3,7 @@
     type="button"
     class="aplayer-icon"
   >
-    <icon :type="icon"/>
+    <icon :type="icon" :theme="theme"/>
   </button>
 </template>
 
@@ -14,7 +14,7 @@
     components: {
       Icon,
     },
-    props: ['icon'],
+    props: ['icon', 'theme']
   }
 </script>
 

@@ -5,10 +5,10 @@
     @mousedown="onDragBegin"
     @click="onClick"
   >
-    <div class="aplayer-button" :class="playing ? 'aplayer-pause' : 'aplayer-play'">
+    <div class="aplayer-button" :class="playing && !chatMode ? 'aplayer-pause' : 'aplayer-play'">
       <icon-button
         :icon="playing ? 'pause' : 'play'"
-        :class="playing ? 'aplayer-icon-pause' : 'aplayer-icon-play'"
+        :class="playing && !chatMode? 'aplayer-icon-pause' : ['aplayer-icon-play', playing ? 'chat-mode-pause' : '']"
       />
     </div>
   </div>
@@ -23,6 +23,7 @@
     props: {
       pic: String,
       theme: String,
+      chatMode: Boolean,
       playing: {
         type: Boolean,
         default: false,
@@ -41,11 +42,13 @@
     },
     computed: {
       currentPicStyleObj () {
-        if (!this.pic) return {}
-        return {
-          backgroundImage: `url(${this.pic})`,
-          backgroundColor: this.theme
+        if (this.pic) {
+          return {
+            backgroundImage: `url(${this.pic})`,
+            backgroundColor: this.theme
+          }
         }
+        return { backgroundColor: this.theme }
       },
     },
     methods: {
@@ -129,6 +132,10 @@
         left: 4px;
         height: 20px;
         width: 20px;
+      }
+      .chat-mode-pause {
+        top: 3px;
+        left: 3px;
       }
     }
 
